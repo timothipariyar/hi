@@ -1,0 +1,638 @@
+
+
+For her · HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You, Always 💛</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  :root {
+    --midnight: #0D1B2A;
+    --deep: #142235;
+    --rose: #F2A7BB;
+    --rose-soft: #fde8ef;
+    --gold: #F5C97A;
+    --gold-soft: #fdf0d5;
+    --lavender: #C9B8D8;
+    --white: #FDFCFF;
+    --muted: rgba(253,252,255,0.55);
+  }
+ 
+  html { scroll-behavior: smooth; }
+ 
+  body {
+    background: var(--midnight);
+    color: var(--white);
+    font-family: 'Lora', serif;
+    overflow-x: hidden;
+    cursor: default;
+  }
+ 
+  /* ── STARS ── */
+  #stars-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+ 
+  /* ── SECTIONS ── */
+  section {
+    position: relative;
+    z-index: 1;
+  }
+ 
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    background: radial-gradient(ellipse at 50% 60%, rgba(242,167,187,0.12) 0%, transparent 65%);
+  }
+ 
+  .hero-eyebrow {
+    font-family: 'Dancing Script', cursive;
+    color: var(--rose);
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    letter-spacing: 0.04em;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.3s ease forwards;
+  }
+ 
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 8vw, 6rem);
+    font-weight: 700;
+    line-height: 1.1;
+    background: linear-gradient(135deg, var(--white) 30%, var(--rose) 70%, var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0;
+    animation: fadeUp 1s 0.6s ease forwards;
+  }
+ 
+  .hero-sub {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    color: var(--muted);
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    margin-top: 1.5rem;
+    max-width: 520px;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 1s 0.9s ease forwards;
+  }
+ 
+  .scroll-hint {
+    margin-top: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 1s 1.5s ease forwards;
+  }
+  .scroll-hint span {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .scroll-arrow {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--rose), transparent);
+    animation: scrollPulse 1.8s ease-in-out infinite;
+  }
+ 
+  /* ── CHAPTER WRAPPER ── */
+  .chapter {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+ 
+  .chapter-label {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1rem;
+    color: var(--rose);
+    letter-spacing: 0.06em;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+ 
+  .chapter-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+    color: var(--white);
+  }
+ 
+  .chapter-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+ 
+  .body-text {
+    font-family: 'Lora', serif;
+    font-size: clamp(1rem, 2.2vw, 1.1rem);
+    line-height: 1.9;
+    color: rgba(253,252,255,0.82);
+    margin-bottom: 1.4rem;
+  }
+ 
+  /* ── POLAROID MEMORIES ── */
+  .memory-row {
+    display: flex;
+    gap: 1.5rem;
+    margin: 3rem 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+ 
+  .polaroid {
+    background: var(--white);
+    color: #1a1a2e;
+    padding: 1.2rem 1.2rem 2.8rem;
+    max-width: 210px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3);
+    transform: rotate(var(--rot, -2deg));
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: rotate(var(--rot, -2deg)) translateY(30px);
+    will-change: transform;
+  }
+ 
+  .polaroid:hover {
+    transform: rotate(0deg) scale(1.04) translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+    z-index: 10;
+  }
+ 
+  .polaroid-emoji {
+    font-size: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--rose-soft), var(--gold-soft));
+    height: 130px;
+    border-radius: 2px;
+    margin-bottom: 0.8rem;
+  }
+ 
+  .polaroid-caption {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1rem;
+    text-align: center;
+    color: #3d2c4e;
+    line-height: 1.4;
+  }
+ 
+  /* ── HIGHLIGHT QUOTE ── */
+  .pull-quote {
+    border-left: 3px solid var(--rose);
+    padding: 1.2rem 1.8rem;
+    margin: 2.5rem 0;
+    background: rgba(242,167,187,0.07);
+    border-radius: 0 8px 8px 0;
+  }
+ 
+  .pull-quote p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    line-height: 1.6;
+    color: var(--white);
+  }
+ 
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem auto;
+    max-width: 400px;
+    opacity: 0.35;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--lavender);
+  }
+  .divider span { font-size: 1.2rem; }
+ 
+  /* ── FINAL SECTION ── */
+  .finale {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    background: radial-gradient(ellipse at 50% 50%, rgba(245,201,122,0.1) 0%, transparent 65%);
+  }
+ 
+  .finale-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 700;
+    font-style: italic;
+    color: var(--gold);
+    line-height: 1.2;
+    margin-bottom: 2rem;
+    max-width: 680px;
+  }
+ 
+  .finale-body {
+    font-size: clamp(1rem, 2.2vw, 1.15rem);
+    color: rgba(253,252,255,0.8);
+    line-height: 1.9;
+    max-width: 600px;
+    margin-bottom: 1.5rem;
+  }
+ 
+  .signature {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    color: var(--rose);
+    margin-top: 3rem;
+  }
+ 
+  .heart-pulse {
+    display: inline-block;
+    font-size: 2rem;
+    animation: heartbeat 1.4s ease-in-out infinite;
+    margin: 1.5rem 0;
+  }
+ 
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(0.8); }
+    50%       { opacity: 1;   transform: scaleY(1); }
+  }
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    14%       { transform: scale(1.25); }
+    28%       { transform: scale(1); }
+    42%       { transform: scale(1.2); }
+    56%       { transform: scale(1); }
+  }
+  footer p{
+    text-align: center;
+  }
+ 
+  /* ── REVEAL ON SCROLL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.35s; }
+ 
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .memory-row { flex-direction: column; align-items: center; }
+    .polaroid { max-width: 260px; }
+    .chapter { padding: 3.5rem 1.4rem; }
+  }
+ 
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+ 
+<canvas id="stars-canvas"></canvas>
+ 
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">a letter written from the heart ✦</p>
+  <h1 class="hero-title">For You,<br>Always.</h1>
+  <p class="hero-sub">This is everything I've felt but didn't always know how to say — the happy parts, the hard parts, and all the love that never went anywhere.</p>
+  <div class="scroll-hint">
+    <span>our story</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+ 
+<!-- CH 1: HOW IT STARTED -->
+<section>
+  <div class="chapter">
+    <span class="chapter-label reveal">Chapter one</span>
+    <h2 class="chapter-title reveal reveal-delay-1">The Girl Who Made Me <em>Nervous</em></h2>
+ 
+    <p class="body-text reveal reveal-delay-2">
+      I still remember the first time I saw you — you were scolding someone(we both know) in tuition class and honestly? I was a little scared of you. I never imagined that this girl, the one who could quiet an entire room, would one day become the person I couldn't imagine a day without.
+    </p>
+ 
+    <div class="pull-quote reveal reveal-delay-2">
+      <p>"You started coming in my note list, which was always same. That's when I knew — this couldn't be a coincidence."</p>
+    </div>
+ 
+    <p class="body-text reveal reveal-delay-3">
+      You massaged me firs, then I messaged you saying "what a coincidence, our music taste matches" — not knowing it was you behind that account. Not knowing that this small message was going to change everything. We talked for weeks before I even knew who you were. And when I found out it was the girl from tuition class — the same one — I couldn't believe how the universe works sometimes.
+    </p>
+ 
+    <div class="memory-row">
+      <div class="polaroid reveal reveal-delay-1" style="--rot: -3deg">
+        <div class="polaroid-emoji">🎵</div>
+        <p class="polaroid-caption">matching music taste was the beginning</p>
+      </div>
+      <div class="polaroid reveal reveal-delay-2" style="--rot: 2deg">
+        <div class="polaroid-emoji">💬</div>
+        <p class="polaroid-caption">weeks of talking without even knowing who you were</p>
+      </div>
+      <div class="polaroid reveal reveal-delay-3" style="--rot: -1deg">
+        <div class="polaroid-emoji">✨</div>
+        <p class="polaroid-caption">when I found out — the world felt smaller and more magical</p>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<div class="divider"><span>✦</span></div>
+ 
+<!-- CH 2: BECOMING CLOSE -->
+<section>
+  <div class="chapter">
+    <span class="chapter-label reveal">Chapter two</span>
+    <h2 class="chapter-title reveal reveal-delay-1">Talking Until <em>Mid Night</em></h2>
+ 
+    <p class="body-text reveal reveal-delay-2">
+      We became friends. Then close friends. Then the kind of close where you forget time exists. Talking every single day, at every class — you'd look at me, and I'd look at you, but I'd always made sure you wouldn't catch me looking. I was that careful with my heart around you.
+    </p>
+ 
+    <p class="body-text reveal reveal-delay-2">
+      Even during exam season, we'd talk late into the night. We could forget to eat, forget everything — but never forget to talk to each other. That meant something. That meant everything.
+    </p>
+ 
+    <div class="pull-quote reveal">
+      <p>"We may have forgot to eat, but there was no chance we'd forget to talk."</p>
+    </div>
+ 
+    <p class="body-text reveal reveal-delay-1">
+      Then came the day you asked me to meet — and I was so, so shy. I said no at first. You kept asking. And when I finally said yes, you fed me with your own hands. I still feel that warmth. That was our first date, and I didn't have words for how full my heart felt.
+    </p>
+    <p class="body-text reveal reveal-delay-2">
+      You were the one who proposed first. Because of course you were — brave, bold, completely yourself. I loved that about you from the start. Our second meeting gave me something I'll carry my whole life: our first kiss. And yes, you had to go first — because I was still too shy to move. Thank you for that.
+    </p>
+ 
+    <div class="memory-row">
+      <div class="polaroid reveal reveal-delay-1" style="--rot: 3deg">
+        <div class="polaroid-emoji">🍽️</div>
+        <p class="polaroid-caption">fed me with her own hands — our first date</p>
+      </div>
+      <div class="polaroid reveal reveal-delay-2" style="--rot: -2.5deg">
+        <div class="polaroid-emoji">💍</div>
+        <p class="polaroid-caption">she proposed first — the bravest thing</p>
+      </div>
+      <div class="polaroid reveal reveal-delay-3" style="--rot: 1.5deg">
+        <div class="polaroid-emoji">💋</div>
+        <p class="polaroid-caption">our first kiss — she went first, of course she did</p>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<div class="divider"><span>✦</span></div>
+ 
+<!-- CH 3: FAREWELL + DISTANCE -->
+<section>
+  <div class="chapter">
+    <span class="chapter-label reveal">Chapter three</span>
+    <h2 class="chapter-title reveal reveal-delay-1">Farewells, <em>Board Exams</em>, and the Distance Between Us</h2>
+ 
+    <p class="body-text reveal reveal-delay-2">
+      We had our college farewell — and we made a date plan after it. It went exactly as we hoped. That felt like a perfect chapter.
+    </p>
+ 
+    <p class="body-text reveal reveal-delay-2">
+      Then came the 12th boards, and after that — your dream. CA. Kathmandu. I was genuinely happy for you. I am still happy for you. Watching someone you love chase something this big and this hard is beautiful. I never wanted to be the reason you slowed down.
+    </p>
+ 
+    <div class="pull-quote reveal">
+      <p>"I was happy for her. She was chasing her dream. I was supporting that — with my whole heart."</p>
+    </div>
+ 
+    <p class="body-text reveal reveal-delay-1">
+      But distance is hard. Not because we loved each other less — I don't believe that for a second. It's hard because when you're used to talking every moment of every day, silence feels louder than it should. When I stopped getting replies and kept seeing you active elsewhere, it didn't make me angry at you — it made me miss you. That's different. I was never fighting you. I was fighting the distance.
+    </p>
+ 
+    <p class="body-text reveal reveal-delay-2">
+      I know CA is one of the hardest things anyone can take on. I never questioned your dedication. I only wished, quietly, for a little corner of your day.
+    </p>
+  </div>
+</section>
+ 
+<div class="divider"><span>✦</span></div>
+ 
+<!-- CH 4: THE HARD PART -->
+<section>
+  <div class="chapter">
+    <span class="chapter-label reveal">Chapter four</span>
+    <h2 class="chapter-title reveal reveal-delay-1">The Part That <em>Broke Me</em> — and What Came After</h2>
+ 
+    <p class="body-text reveal reveal-delay-2">
+      That Saturday — when I came home from church and found(not found but still it was like a surprise so) myself blocked everywhere — I won't pretend that didn't destroy me. I cried like I never had before. Not out of anger. Out of not understanding. Out of loving you and suddenly having no way to reach you at all.
+    </p>
+ 
+    <p class="body-text reveal reveal-delay-2">
+      I made another account just to see if you were okay(yours posts followers and following list). I messaged "hello, are you fine?" — setting aside everything I felt — because you mattered more than my pride. I kept my ego aside even when your reply was just "?". I kept going until it was clear you didn't want to talk, and then I stopped.
+    </p>
+ 
+    <div class="pull-quote reveal">
+      <p>"Even when she left, I checked her profile every day — not out of obsession, but because letting go of someone you love takes longer than a single decision."</p>
+    </div>
+ 
+    <p class="body-text reveal reveal-delay-1">
+      Then came my birthday. You messaged me — the fourth to wish me, at 12:06. I had been waiting. I didn't say that. I just talked to you nicely, set aside everything, and asked why you left. You told me someone had convinced you I wasn't right for you.
+    </p>
+ 
+    <p class="body-text reveal reveal-delay-2">
+      I forgave you. Not because it didn't hurt. It did. But because I love you and I couldn't imagine choosing anything else. When you came back home for a while and we met — I hid everything I felt inside and acted normal. But deep down, I was so happy just to see your face again.
+    </p>
+ 
+    <div class="memory-row">
+      <div class="polaroid reveal reveal-delay-1" style="--rot: -2deg">
+        <div class="polaroid-emoji">🎂</div>
+        <p class="polaroid-caption">at least you texted</p>
+      </div>
+      <div class="polaroid reveal reveal-delay-2" style="--rot: 2.5deg">
+        <div class="polaroid-emoji">🤍</div>
+        <p class="polaroid-caption">I forgave you — because love isn't a scoreboard</p>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<div class="divider"><span>✦</span></div>
+ 
+<!-- CH 5: WHAT I NEED -->
+<section>
+  <div class="chapter">
+    <span class="chapter-label reveal">Chapter five</span>
+    <h2 class="chapter-title reveal reveal-delay-1">Not Complaints — <em>Honest Feelings</em></h2>
+ 
+    <p class="body-text reveal reveal-delay-2">
+      I want to say something carefully, because I don't want this to sound like a list of things you did wrong. It isn't. You haven't done everything wrong. And neither have I been perfect — I know I've hurt you too, in ways I carry with me. I'm sorry for those.
+    </p>
+ 
+    <p class="body-text reveal reveal-delay-2">
+      But I am human. I need attention sometimes. I need to feel like I exist in your world even when we're far apart. When I reply to you instantly and your reply comes days later, I don't resent you — I just feel invisible. When I called and you minimized the screen, I didn't get angry — I just stopped calling, because I didn't want to feel like a burden.
+    </p>
+ 
+    <div class="pull-quote reveal">
+      <p>"I'm not asking for all of your time. Just enough to know I still matter."</p>
+    </div>
+ 
+    <p class="body-text reveal reveal-delay-1">
+      The trip moment — you went somewhere without telling me, and I went somewhere without telling you. We both did the same thing. Maybe that says something: we've both been trying to protect ourselves. I get it. I really do.
+    </p>
+ 
+    <p class="body-text reveal reveal-delay-2">
+      And when I share something about myself and get a laughing reaction and no reply — it stings. Not because I want validation, but because I want to feel close to you. That's all. That has always been all.
+    </p>
+ 
+    <p class="body-text reveal reveal-delay-2">
+      I've been learning to give you your space. To not check my phone every five minutes. To accept that your life is full and hard and demanding. I'm proud of you for that life you're building. I just hope there's still a little place in it for me.
+    </p>
+  </div>
+</section>
+ 
+<div class="divider"><span>✦</span></div>
+ 
+<!-- FINALE -->
+<section class="finale">
+  <div class="heart-pulse">💛</div>
+  <h2 class="finale-title reveal">"Even After Everything — I Choose You."</h2>
+ 
+  <p class="finale-body reveal reveal-delay-1">
+    This isn't a complaint letter. This is a love letter. These are the thoughts of someone who has loved you from the moment you started copying note songs — and hasn't stopped, not once, not even on the hardest days.
+  </p>
+ 
+  <p class="finale-body reveal reveal-delay-2">
+    I know I'm not perfect. I know I've made mistakes. I know our story isn't always easy. But I also know that when I think about the future, you're in it. That hasn't changed.
+  </p>
+ 
+  <p class="finale-body reveal reveal-delay-2">
+    Thank you for being brave enough to message first, to propose first, to kiss first. Thank you for our late night talks, for feeding me with your hands, for wishing me on my birthday even after everything. Thank you for being exactly who you are — complicated, ambitious, real.
+  </p>
+ 
+  <p class="finale-body reveal reveal-delay-3">
+    I am choosing you. I will always choose you. That's the simplest thing I know.
+  </p>
+
+ 
+  <p class="signature reveal reveal-delay-3">
+    Yours, always and completely 💛
+  </p>
+</section>
+
+ 
+<script>
+// ── STARS ──
+const canvas = document.getElementById('stars-canvas');
+const ctx = canvas.getContext('2d');
+ 
+let W, H, stars = [];
+ 
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+ 
+function initStars() {
+  stars = [];
+  const count = Math.floor((W * H) / 5000);
+  for (let i = 0; i < count; i++) {
+    stars.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.2 + 0.3,
+      alpha: Math.random(),
+      speed: Math.random() * 0.003 + 0.001,
+      phase: Math.random() * Math.PI * 2
+    });
+  }
+}
+ 
+function drawStars(ts) {
+  ctx.clearRect(0, 0, W, H);
+  stars.forEach(s => {
+    s.alpha = 0.3 + 0.5 * Math.sin(s.phase + ts * s.speed);
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(253,252,255,${s.alpha})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawStars);
+}
+ 
+resize();
+initStars();
+requestAnimationFrame(drawStars);
+window.addEventListener('resize', () => { resize(); initStars(); });
+ 
+// ── SCROLL REVEAL ──
+const reveals = document.querySelectorAll('.reveal');
+ 
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+ 
+reveals.forEach(el => observer.observe(el));
+ 
+// ── POLAROID REVEAL ──
+const polaroids = document.querySelectorAll('.polaroid');
+const pObserver = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => {
+        e.target.style.transition = 'opacity 0.7s ease, transform 0.7s ease, box-shadow 0.3s ease';
+        e.target.style.opacity = '1';
+        e.target.style.transform = `rotate(${e.target.style.getPropertyValue('--rot') || '-2deg'}) translateY(0)`;
+        pObserver.unobserve(e.target);
+      }, i * 120);
+    }
+  });
+}, { threshold: 0.2 });
+ 
+polaroids.forEach(p => pObserver.observe(p));
+</script>
+</body>
+<footer>
+    <p>Yo website paila bata nai banaudai thiye maile ra paci dherai kura modify gareko xa copy vako vaye or mukhle bolerko jasto na vaiera breif matra xa</p>
+    <p>This is only for you donot show this to OTHERS.</p>
+</footer>
+</html>
